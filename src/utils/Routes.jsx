@@ -5,11 +5,13 @@ import ProtectedRoutes from "./ProtectedRoutes";
 export const routes = [
   {
     path: "/",
-    element: (
-      <ProtectedRoutes>
-        <Home />
-      </ProtectedRoutes>
-    ),
+    element: <ProtectedRoutes />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+    ],
   },
 
   {
