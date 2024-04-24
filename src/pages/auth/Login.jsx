@@ -35,7 +35,7 @@ export default function Login({ setAuthState }) {
           type="submit"
           className="uppercase btn text-white font-semibold bg-pink-clr w-full p-3 rounded-lg"
         >
-          sign up
+          sign in
         </button>
         <span className="flex gap-3 items-center">
           <p className="text-xs">Don't have an account </p>
