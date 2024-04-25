@@ -55,7 +55,10 @@ export default function Navigator() {
           <BsFillPinMapFill className="text-pink-clr text-2xl" />
           <span>
             <h3 className="text-lg font-semibold">Aboru, Lagos, Nigeria</h3>
-            <p className="text-sm font-light">lat: -72.124, long: 2.876</p>
+            <p className="text-sm font-light">
+              lat: {selectedPin.lat.toString().slice(0, 6)}, long:{" "}
+              {selectedPin.long.toString().slice(0, 6)}
+            </p>
           </span>
         </div>
 

@@ -1,17 +1,27 @@
 import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
 import { AuthContext } from "./../../context/AuthContext";
+import { createPin } from "../../utils/Functions";
 
 export default function CreateLocation() {
-  const { closeModal, setCreateLocationModalActive } = useContext(AuthContext);
-  const updateLocation = (e) => {
-    e.preventDefault();
-  };
+  const { user, closeModal, setCreateLocationModalActive, selectedPin } =
+    useContext(AuthContext);
 
   const closeUpdateProfileModal = () => {
     closeModal();
     setCreateLocationModalActive(false);
   };
+
+  const updateLocation = async (e) => {
+    e.preventDefault();
+    const pinInfo = Object.fromEntries(new FormData(e.target));
+
+    const userId = user._id;
+    const pinData = { userId, ...pinInfo };
+    await createPin(pinData);
+    closeUpdateProfileModal();
+  };
+
   return (
     <>
       <div className="w-screen h-screen fixed inset-0 bg-black opacity-50"></div>
@@ -32,12 +42,12 @@ export default function CreateLocation() {
           <p className="text-sm">Enter information for this location</p>
         </span>
 
-        <label htmlFor="fullName" className="form-control w-full">
+        <label htmlFor="title" className="form-control w-full">
           <p className="text-sm uppercase">LOCATION TITLE</p>
           <input
             type="text"
-            id="fullName"
-            name="fullName"
+            id="title"
+            name="title"
             required
             className="input input-bordered w-full"
           />
@@ -52,17 +62,19 @@ export default function CreateLocation() {
               name="lat"
               required
               className="input input-bordered w-full"
+              defaultValue={selectedPin.lat}
             />
           </label>
 
-          <label htmlFor="phone" className="form-control w-full">
+          <label htmlFor="long" className="form-control w-full">
             <p className="text-sm uppercase">longitude</p>
             <input
               type="text"
-              id="phone"
-              name="phone"
+              id="long"
+              name="long"
               required
               className="input input-bordered w-full"
+              defaultValue={selectedPin.long}
             />
           </label>
         </div>

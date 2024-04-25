@@ -1,9 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
+import userLocMarker from "../assets/userLoc.svg";
+import savedPin from "../assets/pin.svg";
 
 // map api
 import {
   APIProvider,
+  InfoWindow,
   Map,
   Marker,
   useMarkerRef,
@@ -11,19 +14,13 @@ import {
 import Sample from "./Sample";
 
 export default function MapWrapper() {
-  const { isLoaded, setPinSelected, userLocation } = useContext(AuthContext);
-
-  // const center = {
-  //   lat: userLocation.lat,
-  //   lng: userLocation.long,
-  // };
+  const { user, isLoaded, userPins } = useContext(AuthContext);
+  // const [userPins, setUserPins] = useState([]);
 
   const center = {
     lat: 6.823504,
     lng: 3.215042,
   };
-
-  const [markerRef, marker] = useMarkerRef();
 
   return (
     <>
@@ -31,14 +28,26 @@ export default function MapWrapper() {
         <APIProvider apiKey={import.meta.env.VITE_GOOGLE_API_KEY}>
           <Map
             id="map"
-            style={{ width: "100vw", height: "100vh" }}
+            style={{ width: "100vw", height: "100dvh" }}
             defaultCenter={center}
             defaultZoom={15}
             gestureHandling={"greedy"}
             disableDefaultUI={false}
             mapTypeControl={false}
           >
-            <Marker ref={markerRef} position={center}></Marker>
+            <Marker
+              position={center}
+              title="Your Location"
+              icon={userLocMarker}
+            ></Marker>
+            {userPins?.map((pin) => (
+              <Marker
+                key={pin.id}
+                position={{ lat: pin.lat, lng: pin.long }}
+                title={pin.title}
+                icon={savedPin}
+              ></Marker>
+            ))}
           </Map>
           <Sample />
         </APIProvider>

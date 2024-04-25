@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
@@ -20,6 +21,7 @@ export const AuthContextProvider = ({ children }) => {
   const [updateLocationModalActive, setUpdateLocationModalActive] =
     useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [userPins, setUserPins] = useState([]);
 
   const [map, setMap] = useState(null);
 
@@ -76,6 +78,24 @@ export const AuthContextProvider = ({ children }) => {
     navigator.geolocation.getCurrentPosition(success, error, options);
   }, []);
 
+  // fetch user pins
+  // Fetch all user pins
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
+  useEffect(() => {
+    const fetchUserPins = async () => {
+      await axios
+        .get(`${baseUrl}/api/pins/user/${user._id}`)
+        .then((res) => {
+          setUserPins(res.data.pins);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    fetchUserPins();
+  }, []);
   return (
     <AuthContext.Provider
       value={{
@@ -102,6 +122,7 @@ export const AuthContextProvider = ({ children }) => {
         setCreateLocationModalActive,
         updateLocationModalActive,
         setUpdateLocationModalActive,
+        userPins,
       }}
     >
       {children}

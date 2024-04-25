@@ -31,3 +31,26 @@ export const login = async (data) => {
       toast.error(err.response.data.message, { id: toastId });
     });
 };
+
+export const createPin = async (pinData) => {
+  const toastId = toast.loading("Creating pin...");
+  await axios
+    .post(`${baseUrl}/api/pins`, pinData)
+    .then((res) => {
+      toast.success(res.data.message, { id: toastId });
+    })
+    .catch((err) => {
+      toast.error(err.response.data.message, { id: toastId });
+    });
+};
+
+export const fetchUserPins = async (userId) => {
+  await axios
+    .get(`${baseUrl}/api/pins/user/${userId}`)
+    .then((res) => {
+      return res.data.pins;
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
