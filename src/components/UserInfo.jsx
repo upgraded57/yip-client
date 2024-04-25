@@ -2,11 +2,15 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 export default function UserInfo() {
-  const { user, userLocation } = useContext(AuthContext);
+  const { user, userLocation, map } = useContext(AuthContext);
   const userInitials =
     user?.fullName.split(" ")[0].split("")[0] +
     user?.fullName.split(" ")[1].split("")[0];
 
+  const centerMap = () => {
+    const center = { lat: userLocation.lat, lng: userLocation.long };
+    map.setCenter(center);
+  };
   return (
     <div className="p-4 bg-white shadow-lg rounded-2xl w-full max-w-[96vw] mx-auto md:mx-0 md:max-w-[420px] fixed top-[2vw] left-1/2 -translate-x-1/2 md:-translate-x-0 md:left-[10vw] flex items-center gap-4">
       <div className="w-[60px] aspect-square rounded-full bg-[#aeaeae] uppercase text-2xl font-semibold text-white flex items-center justify-center">
@@ -23,6 +27,7 @@ export default function UserInfo() {
           <button
             type="button"
             className="btn btn-sm bg-pink-clr  text-white rounded-full"
+            onClick={centerMap}
           >
             Center
           </button>

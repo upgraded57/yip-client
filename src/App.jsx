@@ -9,8 +9,8 @@ function App() {
   return (
     <>
       <AuthContextProvider>
-        <RouterProvider router={router} />
         <Toaster />
+        <RouterProvider router={router} />
       </AuthContextProvider>
     </>
   );

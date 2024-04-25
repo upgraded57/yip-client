@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 export default function Navigator() {
   const {
     openPinDetails,
+    selectedPin,
     closePinDetails,
     pinDetailsExpanded,
     openModal,

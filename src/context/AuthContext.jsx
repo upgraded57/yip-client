@@ -5,10 +5,13 @@ export const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
 
-  const [userLocation, setUserLocation] = useState({ lat: 0, long: 0 });
+  const [userLocation, setUserLocation] = useState({
+    lat: 6.823504,
+    long: 3.215042,
+  });
   const [pinActive, setPinActive] = useState(false);
   const [pinSelected, setPinSelected] = useState(false);
-  const [selectedPin, setSelectedPin] = useState("");
+  const [selectedPin, setSelectedPin] = useState({});
   const [pinDetailsExpanded, setPinDetailsExpanded] = useState(false);
   const [profileSettingModalActive, setProfileSettingModalActive] =
     useState(false);
@@ -17,6 +20,8 @@ export const AuthContextProvider = ({ children }) => {
   const [updateLocationModalActive, setUpdateLocationModalActive] =
     useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [map, setMap] = useState(null);
 
   const openPinDetails = () => {
     setPinDetailsExpanded(true);
@@ -47,10 +52,10 @@ export const AuthContextProvider = ({ children }) => {
   function success(pos) {
     const crd = pos.coords;
 
-    setUserLocation({
-      lat: crd.latitude,
-      long: crd.longitude,
-    });
+    // setUserLocation({
+    //   lat: crd.latitude,
+    //   long: crd.longitude,
+    // });
 
     setIsLoaded(true);
   }
@@ -59,9 +64,12 @@ export const AuthContextProvider = ({ children }) => {
     console.warn(`ERROR(${err.code}): ${err.message}`);
     // confirm("Unable to fetch current location");
     setUserLocation({
-      lat: 6.81491,
-      long: 3.19518,
+      lat: 9.0778,
+      long: 8.6775,
     });
+
+    alert("Unable to fetch your location");
+    setIsLoaded(true);
   }
 
   useEffect(() => {
@@ -75,6 +83,8 @@ export const AuthContextProvider = ({ children }) => {
         userLocation,
         pinActive,
         isLoaded,
+        map,
+        setMap,
         setPinActive,
         selectedPin,
         setSelectedPin,
