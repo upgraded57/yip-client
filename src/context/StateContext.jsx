@@ -11,6 +11,7 @@ export const StateContextProvider = ({ children }) => {
     type: "",
   });
   const [pin, setPin] = useState({});
+  const [distance, setDistance] = useState("");
 
   const [userLocation, setUserLocation] = useState({
     lat: 6.823504,
@@ -30,6 +31,8 @@ export const StateContextProvider = ({ children }) => {
         setUserPins,
         modal,
         setModal,
+        distance,
+        setDistance,
       }}
     >
       {children}

@@ -12,6 +12,7 @@
   "dependencies": {
     "@vis.gl/react-google-maps": "^0.9.0",
     "axios": "^1.6.8",
+    "geolocator": "^2.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hot-toast": "^2.4.1",

@@ -17,7 +17,7 @@ export default function Navigator() {
   const navigate = useNavigate();
   const [navigatorExpanded, setNavigatorExpanded] = useState(false);
 
-  const { pin, setModal } = useContext(StateContext);
+  const { pin, setModal, distance } = useContext(StateContext);
 
   const lat = pin.lat;
   const lng = pin.lng;
@@ -30,6 +30,9 @@ export default function Navigator() {
     });
     navigate("/");
   };
+
+  console.log(distance);
+
   return (
     <>
       {/* Overlay for when pin details is expanded */}
@@ -73,39 +76,13 @@ export default function Navigator() {
           </span>
         </div>
 
-        <div className="border-t border-b border-gray-100 px-2 flex items-center gap-2">
+        <div className="px-2 flex items-center gap-2">
           <p>Distance from you:</p>
           <p className="font-semibold">700m</p>
         </div>
 
         {navigatorExpanded && (
           <>
-            <div className="w-full aspect-video rounded-xl mt-4 overflow-hidden">
-              <img
-                src="https://media.istockphoto.com/id/172764130/photo/travel-destination.webp?b=1&s=170667a&w=0&k=20&c=jCxWlrUnoKrhKPImHZRctqwsC9sR1r8dalK68w2KbVI="
-                alt="Mini Map"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {pin.title ? (
-              <div className="flex gap-2 items-center">
-                <button
-                  className="btn btn-md w-full rounded-full uppercase text-white bg-red-700 mt-4"
-                  onClick={() => deleteLocation(pin)}
-                >
-                  delete location
-                </button>
-              </div>
-            ) : (
-              <button
-                className="btn btn-md w-full rounded-full uppercase text-white bg-pink-clr mt-4"
-                onClick={() => setModal({ open: true, type: "createLocation" })}
-              >
-                save location
-              </button>
-            )}
-
             <div className="mt-4">
               <div className="border-t border-b border-gray-100 px-2 flex items-center gap-2 mb-4">
                 <p>Estimated journeying time </p>
@@ -159,6 +136,24 @@ export default function Navigator() {
                 </span>
               </div>
             </div>
+
+            {pin.title ? (
+              <div className="flex gap-2 items-center">
+                <button
+                  className="btn btn-md w-full rounded-full uppercase text-white bg-red-700 mt-4"
+                  onClick={() => deleteLocation(pin)}
+                >
+                  delete location
+                </button>
+              </div>
+            ) : (
+              <button
+                className="btn btn-md w-full rounded-full uppercase text-white bg-pink-clr mt-4"
+                onClick={() => setModal({ open: true, type: "createLocation" })}
+              >
+                save location
+              </button>
+            )}
           </>
         )}
       </div>

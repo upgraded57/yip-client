@@ -2,9 +2,11 @@ import { useMap } from "@vis.gl/react-google-maps";
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { StateContext } from "../context/StateContext";
+import { getPinDistanceFromUser } from "../utils/Functions";
 
 export default function MapInstance() {
-  const { setMap, setPin, setModal } = useContext(StateContext);
+  const { setMap, setPin, setModal, setDistance, userLocation } =
+    useContext(StateContext);
 
   const map = useMap("map");
 
@@ -15,13 +17,21 @@ export default function MapInstance() {
 
     setMap(map);
 
-    map.addListener("click", (e) => {
+    map.addListener("click", async (e) => {
       setPin({
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
       });
 
-      // setNavigatorOpen(true);
+      const pin = {
+        lat: e.latLng.lat(),
+        lng: e.latLng.lng(),
+      };
+
+      const d = getPinDistanceFromUser(pin, userLocation);
+
+      setDistance(d);
+
       setModal({
         open: true,
         type: "navigator",
