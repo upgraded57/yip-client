@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
-import { AuthContext } from "./../../context/AuthContext";
+import { StateContext } from "../../context/StateContext";
 
 export default function UpdateProfile() {
-  const { closeModal, setProfileSettingModalActive } = useContext(AuthContext);
+  const { closeModal, setProfileSettingModalActive } = useContext(StateContext);
   const updateUserProfile = (e) => {
     e.preventDefault();
   };

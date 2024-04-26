@@ -1,15 +1,20 @@
 import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
-import { AuthContext } from "./../../context/AuthContext";
+import { StateContext } from "../../context/StateContext";
 import { createPin } from "../../utils/Functions";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function CreateLocation() {
-  const { user, closeModal, setCreateLocationModalActive, selectedPin } =
-    useContext(AuthContext);
+  const { user, pin, setNavigatorOpen, setSaveLocationModalOpen } =
+    useContext(StateContext);
+
+  const navigate = useNavigate();
+  const lat = pin.lat;
+  const lng = pin.lng;
 
   const closeUpdateProfileModal = () => {
-    closeModal();
-    setCreateLocationModalActive(false);
+    setSaveLocationModalOpen(false);
+    setNavigatorOpen(false);
   };
 
   const updateLocation = async (e) => {
@@ -18,8 +23,10 @@ export default function CreateLocation() {
 
     const userId = user._id;
     const pinData = { userId, ...pinInfo };
+
     await createPin(pinData);
     closeUpdateProfileModal();
+    location.reload();
   };
 
   return (
@@ -62,7 +69,7 @@ export default function CreateLocation() {
               name="lat"
               required
               className="input input-bordered w-full"
-              defaultValue={selectedPin.lat}
+              defaultValue={lat}
             />
           </label>
 
@@ -74,7 +81,7 @@ export default function CreateLocation() {
               name="long"
               required
               className="input input-bordered w-full"
-              defaultValue={selectedPin.long}
+              defaultValue={lng}
             />
           </label>
         </div>

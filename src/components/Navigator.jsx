@@ -9,44 +9,38 @@ import {
 import { LiaBicycleSolid } from "react-icons/lia";
 import { TbTrain, TbBus } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
-import { AuthContext } from "../context/AuthContext";
+import { useSearchParams } from "react-router-dom";
+import { StateContext } from "../context/StateContext";
 
 export default function Navigator() {
-  const {
-    openPinDetails,
-    selectedPin,
-    closePinDetails,
-    pinDetailsExpanded,
-    openModal,
-    setCreateLocationModalActive,
-  } = useContext(AuthContext);
+  const [navigatorExpanded, setNavigatorExpanded] = useState(false);
 
-  const openSavePinModal = () => {
-    openModal();
-    setCreateLocationModalActive(true);
-  };
+  const { pin, setSaveLocationModalOpen } = useContext(StateContext);
 
+  const lat = pin.lat;
+  const lng = pin.lng;
   return (
     <>
       {/* Overlay for when pin details is expanded */}
-      {pinDetailsExpanded && (
+      {navigatorExpanded && (
         <div
           className="w-screen h-screen bg-black opacity-50 fixed inset-0"
-          onClick={closePinDetails}
+          onClick={() => setNavigatorExpanded(false)}
         ></div>
       )}
+
       <div className="p-4 bg-white shadow-lg rounded-t-2xl w-full max-w-[96vw] md:max-w-[420px] fixed bottom-0 md:left-[10vw] left-1/2 -translate-x-1/2 md:-translate-x-0 transition">
-        {!pinDetailsExpanded ? (
+        {!navigatorExpanded ? (
           <button
             className="btn btn-lg btn-circle bg-pink-clr text-white absolute right-4 -top-8 border-4 border-white "
-            onClick={openPinDetails}
+            onClick={() => setNavigatorExpanded(true)}
           >
             <FaRegWindowMaximize className="text-2xl" />
           </button>
         ) : (
           <button
             className="btn btn-ghost absolute right-0 top-0 hover:bg-transparent"
-            onClick={closePinDetails}
+            onClick={() => setNavigatorExpanded(false)}
           >
             <IoClose className="text-2xl" />
           </button>
@@ -56,8 +50,8 @@ export default function Navigator() {
           <span>
             <h3 className="text-lg font-semibold">Aboru, Lagos, Nigeria</h3>
             <p className="text-sm font-light">
-              lat: {selectedPin.lat.toString().slice(0, 6)}, long:{" "}
-              {selectedPin.long.toString().slice(0, 6)}
+              lat: {lat?.toString().slice(0, 7)}, long:{" "}
+              {lng?.toString().slice(0, 7)}
             </p>
           </span>
         </div>
@@ -67,7 +61,7 @@ export default function Navigator() {
           <p className="font-semibold">700m</p>
         </div>
 
-        {pinDetailsExpanded && (
+        {navigatorExpanded && (
           <>
             <div className="w-full aspect-video rounded-xl mt-4 overflow-hidden">
               <img
@@ -79,7 +73,7 @@ export default function Navigator() {
 
             <button
               className="btn btn-md w-full rounded-full uppercase text-white bg-pink-clr mt-4"
-              onClick={openSavePinModal}
+              onClick={() => setSaveLocationModalOpen(true)}
             >
               save location
             </button>

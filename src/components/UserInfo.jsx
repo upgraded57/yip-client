@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { StateContext } from "../context/StateContext";
 
 export default function UserInfo() {
-  const { user, userLocation, map } = useContext(AuthContext);
+  const { user, userLocation, map } = useContext(StateContext);
   const userInitials =
     user?.fullName.split(" ")[0].split("")[0] +
     user?.fullName.split(" ")[1].split("")[0];

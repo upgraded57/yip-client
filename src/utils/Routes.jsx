@@ -1,6 +1,9 @@
+import axios from "axios";
 import Home from "../pages/Home";
 import Auth from "./../pages/auth/Auth";
 import ProtectedRoutes from "./ProtectedRoutes";
+import Redir from "../pages/auth/Redir";
+const baseUrl = import.meta.env.VITE_BASE_URL;
 
 export const routes = [
   {
@@ -9,7 +12,15 @@ export const routes = [
     children: [
       {
         path: "/",
+        element: <Redir />,
+      },
+      {
+        path: "/:userId",
         element: <Home />,
+        loader: ({ params }) => {
+          const { userId } = params;
+          return axios.get(`${baseUrl}/pins/user/${userId}`);
+        },
       },
     ],
   },

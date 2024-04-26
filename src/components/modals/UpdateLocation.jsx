@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { IoClose } from "react-icons/io5";
-import { AuthContext } from "./../../context/AuthContext";
+import { StateContext } from "../../context/StateContext";
 
 export default function UpdateLocation() {
-  const { closeModal, setCreateLocationModalActive } = useContext(AuthContext);
+  const { closeModal, setCreateLocationModalActive } = useContext(StateContext);
   const updateLocation = (e) => {
     e.preventDefault();
   };

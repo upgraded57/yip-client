@@ -1,17 +1,17 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { routes } from "./utils/Routes";
 import { Toaster } from "react-hot-toast";
-import { AuthContextProvider } from "./context/AuthContext";
+import { StateContextProvider } from "./context/StateContext";
 
 function App() {
   const router = createBrowserRouter(routes);
 
   return (
     <>
-      <AuthContextProvider>
+      <StateContextProvider>
         <Toaster />
         <RouterProvider router={router} />
-      </AuthContextProvider>
+      </StateContextProvider>
     </>
   );
 }

@@ -10,7 +10,7 @@ export const signUp = async (data) => {
       toast.success(res.data.message, { id: toastId });
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      location = "/";
+      location = `/${res.data.user._id}`;
     })
     .catch((err) => {
       toast.error(err.response.data.message, { id: toastId });
@@ -25,7 +25,7 @@ export const login = async (data) => {
       toast.success(res.data.message, { id: toastId });
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
-      location = "/";
+      location = `/${res.data.user._id}`;
     })
     .catch((err) => {
       toast.error(err.response.data.message, { id: toastId });
@@ -35,22 +35,11 @@ export const login = async (data) => {
 export const createPin = async (pinData) => {
   const toastId = toast.loading("Creating pin...");
   await axios
-    .post(`${baseUrl}/api/pins`, pinData)
+    .post(`${baseUrl}/pins`, pinData)
     .then((res) => {
       toast.success(res.data.message, { id: toastId });
     })
     .catch((err) => {
       toast.error(err.response.data.message, { id: toastId });
-    });
-};
-
-export const fetchUserPins = async (userId) => {
-  await axios
-    .get(`${baseUrl}/api/pins/user/${userId}`)
-    .then((res) => {
-      return res.data.pins;
-    })
-    .catch((err) => {
-      console.log(err);
     });
 };

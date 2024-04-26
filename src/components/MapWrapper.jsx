@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useContext, useRef, useState } from "react";
+import { StateContext } from "../context/StateContext";
 import userLocMarker from "../assets/userLoc.svg";
 import savedPin from "../assets/pin.svg";
 
@@ -11,11 +11,15 @@ import {
   Marker,
   useMarkerRef,
 } from "@vis.gl/react-google-maps";
-import Sample from "./Sample";
+import MapInstance from "./MapInstance";
+import { useNavigate } from "react-router-dom";
 
 export default function MapWrapper() {
-  const { user, isLoaded, userPins } = useContext(AuthContext);
-  // const [userPins, setUserPins] = useState([]);
+  const navigate = useNavigate();
+  const { map, userPins } = useContext(StateContext);
+  const [markerRef, marker] = useMarkerRef();
+
+  const mapRef = useRef(map);
 
   const center = {
     lat: 6.823504,
@@ -24,38 +28,44 @@ export default function MapWrapper() {
 
   return (
     <>
-      {isLoaded ? (
-        <APIProvider apiKey={import.meta.env.VITE_GOOGLE_API_KEY}>
-          <Map
-            id="map"
-            style={{ width: "100vw", height: "100dvh" }}
-            defaultCenter={center}
-            defaultZoom={15}
-            gestureHandling={"greedy"}
-            disableDefaultUI={false}
-            mapTypeControl={false}
-          >
-            <Marker
-              position={center}
-              title="Your Location"
-              icon={userLocMarker}
-            ></Marker>
-            {userPins?.map((pin) => (
+      <APIProvider apiKey={import.meta.env.VITE_GOOGLE_API_KEY}>
+        <Map
+          id="map"
+          ref={mapRef}
+          style={{ width: "100vw", height: "100dvh" }}
+          defaultCenter={center}
+          defaultZoom={15}
+          gestureHandling={"greedy"}
+          disableDefaultUI={false}
+          mapTypeControl={false}
+        >
+          <Marker
+            position={center}
+            title="Your Location"
+            icon={userLocMarker}
+            ref={markerRef}
+          ></Marker>
+          <InfoWindow anchor={marker}>
+            <div>
+              <p className="text-sm font-semibold">Your Location</p>
+            </div>
+          </InfoWindow>
+          {userPins?.map((pin) => (
+            <>
               <Marker
-                key={pin.id}
+                key={pin._id}
                 position={{ lat: pin.lat, lng: pin.long }}
                 title={pin.title}
                 icon={savedPin}
               ></Marker>
-            ))}
-          </Map>
-          <Sample />
-        </APIProvider>
-      ) : (
-        <div className="w-screen h-screen flex items-center justify-center">
+            </>
+          ))}
+        </Map>
+        <MapInstance />
+      </APIProvider>
+      {/* <div className="w-screen h-screen flex items-center justify-center">
           <span className="loading loading-spinner loading-lg"></span>
-        </div>
-      )}
+        </div> */}
     </>
   );
 }
