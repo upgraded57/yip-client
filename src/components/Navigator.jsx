@@ -9,16 +9,27 @@ import {
 import { LiaBicycleSolid } from "react-icons/lia";
 import { TbTrain, TbBus } from "react-icons/tb";
 import { IoClose } from "react-icons/io5";
-import { useSearchParams } from "react-router-dom";
 import { StateContext } from "../context/StateContext";
+import { deletePin } from "../utils/Functions";
+import { useNavigate } from "react-router-dom";
 
 export default function Navigator() {
+  const navigate = useNavigate();
   const [navigatorExpanded, setNavigatorExpanded] = useState(false);
 
-  const { pin, setSaveLocationModalOpen } = useContext(StateContext);
+  const { pin, setModal } = useContext(StateContext);
 
   const lat = pin.lat;
   const lng = pin.lng;
+
+  const deleteLocation = async (pin) => {
+    await deletePin(pin._id);
+    setModal({
+      open: false,
+      type: "",
+    });
+    navigate("/");
+  };
   return (
     <>
       {/* Overlay for when pin details is expanded */}
@@ -48,7 +59,13 @@ export default function Navigator() {
         <div className="flex p-2 gap-6 items-center">
           <BsFillPinMapFill className="text-pink-clr text-2xl" />
           <span>
-            <h3 className="text-lg font-semibold">Aboru, Lagos, Nigeria</h3>
+            <h3
+              className={`text-lg font-semibold ${
+                pin.title ? "non-italic" : "italic"
+              }`}
+            >
+              {pin.title || "Unsaved Location"}
+            </h3>
             <p className="text-sm font-light">
               lat: {lat?.toString().slice(0, 7)}, long:{" "}
               {lng?.toString().slice(0, 7)}
@@ -71,12 +88,23 @@ export default function Navigator() {
               />
             </div>
 
-            <button
-              className="btn btn-md w-full rounded-full uppercase text-white bg-pink-clr mt-4"
-              onClick={() => setSaveLocationModalOpen(true)}
-            >
-              save location
-            </button>
+            {pin.title ? (
+              <div className="flex gap-2 items-center">
+                <button
+                  className="btn btn-md w-full rounded-full uppercase text-white bg-red-700 mt-4"
+                  onClick={() => deleteLocation(pin)}
+                >
+                  delete location
+                </button>
+              </div>
+            ) : (
+              <button
+                className="btn btn-md w-full rounded-full uppercase text-white bg-pink-clr mt-4"
+                onClick={() => setModal({ open: true, type: "createLocation" })}
+              >
+                save location
+              </button>
+            )}
 
             <div className="mt-4">
               <div className="border-t border-b border-gray-100 px-2 flex items-center gap-2 mb-4">

@@ -9,8 +9,7 @@ import MapWrapper from "../components/MapWrapper";
 import { useLoaderData } from "react-router-dom";
 
 export default function Home() {
-  const { setUserPins, navigatorOpen, saveLocationModalOpen } =
-    useContext(StateContext);
+  const { setUserPins, modal } = useContext(StateContext);
   const data = useLoaderData();
 
   useEffect(() => {
@@ -20,10 +19,10 @@ export default function Home() {
     <div className="min-h-full">
       <MapWrapper />
       <UserInfo />
-      {navigatorOpen && <Navigator />}
-      {/* {profileSettingModalActive && <UpdateProfile />} */}
-      {saveLocationModalOpen && <CreateLocation />}
-      {/* {updateLocationModalActive && <UpdateLocation />} */}
+      {modal.open && modal.type === "navigator" && <Navigator />}
+      {modal.open && modal.type === "updateProfile" && <UpdateProfile />}
+      {modal.open && modal.type === "createLocation" && <CreateLocation />}
+      {modal.open && modal.type === "updateLocation" && <UpdateLocation />}
     </div>
   );
 }

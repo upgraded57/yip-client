@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { StateContext } from "../context/StateContext";
 
 export default function MapInstance() {
-  const { setMap, setPin, setNavigatorOpen } = useContext(StateContext);
+  const { setMap, setPin, setModal } = useContext(StateContext);
 
   const map = useMap("map");
 
@@ -21,7 +21,11 @@ export default function MapInstance() {
         lng: e.latLng.lng(),
       });
 
-      setNavigatorOpen(true);
+      // setNavigatorOpen(true);
+      setModal({
+        open: true,
+        type: "navigator",
+      });
     });
   }, [map]);
 

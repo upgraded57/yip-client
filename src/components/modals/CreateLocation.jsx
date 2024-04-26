@@ -5,16 +5,14 @@ import { createPin } from "../../utils/Functions";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function CreateLocation() {
-  const { user, pin, setNavigatorOpen, setSaveLocationModalOpen } =
-    useContext(StateContext);
+  const { user, pin, setModal } = useContext(StateContext);
 
   const navigate = useNavigate();
   const lat = pin.lat;
   const lng = pin.lng;
 
   const closeUpdateProfileModal = () => {
-    setSaveLocationModalOpen(false);
-    setNavigatorOpen(false);
+    setModal({ open: false, type: "" });
   };
 
   const updateLocation = async (e) => {
@@ -26,7 +24,7 @@ export default function CreateLocation() {
 
     await createPin(pinData);
     closeUpdateProfileModal();
-    location.reload();
+    navigate("/");
   };
 
   return (

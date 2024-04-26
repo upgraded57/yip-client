@@ -6,8 +6,10 @@ export const StateContextProvider = ({ children }) => {
   const user = JSON.parse(localStorage.getItem("user")) || null;
   const [map, setMap] = useState(null);
   const [userPins, setUserPins] = useState([]);
-  const [navigatorOpen, setNavigatorOpen] = useState(false);
-  const [saveLocationModalOpen, setSaveLocationModalOpen] = useState(false);
+  const [modal, setModal] = useState({
+    open: false,
+    type: "",
+  });
   const [pin, setPin] = useState({});
 
   const [userLocation, setUserLocation] = useState({
@@ -26,10 +28,8 @@ export const StateContextProvider = ({ children }) => {
         userLocation,
         userPins,
         setUserPins,
-        navigatorOpen,
-        setNavigatorOpen,
-        saveLocationModalOpen,
-        setSaveLocationModalOpen,
+        modal,
+        setModal,
       }}
     >
       {children}

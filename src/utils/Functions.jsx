@@ -43,3 +43,15 @@ export const createPin = async (pinData) => {
       toast.error(err.response.data.message, { id: toastId });
     });
 };
+
+export const deletePin = async (pinId) => {
+  const toastId = toast.loading("Deleting pin...");
+  await axios
+    .delete(`${baseUrl}/pins/${pinId}`)
+    .then((res) => {
+      toast.success(res.data.message, { id: toastId });
+    })
+    .catch((err) => {
+      toast.error(err.response.data.message, { id: toastId });
+    });
+};
